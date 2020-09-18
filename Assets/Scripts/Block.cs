@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public enum BlockColor { Red, Green, Blue, Yellow, Magenta, Gray }
 
@@ -43,7 +43,7 @@ public class Block : MonoBehaviour
 
     private void SetSprite()
     {
-        var sprite = BlockType.First(type => type.Color == Color).Sprite;
+        var sprite = BlockTypes.First(type => type.Color == Color).sprite;
         GetComponent<SpriteRenderer>().sprite = sprite;
     }
 }
