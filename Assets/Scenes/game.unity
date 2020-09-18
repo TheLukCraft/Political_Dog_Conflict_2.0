@@ -154,8 +154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlockPrefab: {fileID: 8880171536348946387, guid: eb7430b193748cc4fb6d538bdf5a3586, type: 3}
   Width: 5
-  Height: 6
-  GridSize: 2
+  Height: 7
+  GridSize: 1.2
+  BlockSize: 0.8
 --- !u!4 &1042105449
 Transform:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042105447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9646693, y: -0.1060788, z: -1.3325998}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -20,6 +20,10 @@ public class Board : MonoBehaviour
     [Range(0.5f, 5f)]
     float GridSize = 2f;
 
+    [SerializeField]
+    [Range(0.5f, 2f)]
+    float BlockSize = 1f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +48,15 @@ public class Board : MonoBehaviour
     {
         var obj = Instantiate(BlockPrefab);
         obj.transform.parent = transform;
-        obj.transform.localPosition = new Vector2(x, y);
+        obj.transform.localPosition = GetBlockPosition(x,y);
+        obj.transform.localScale = Vector3.one * BlockSize;
+    }
+
+    public Vector2 GetBlockPosition(int x, int y)
+    {
+        var basePosition = new Vector2(
+            x - Width /2f +0.5f,
+            y - Height /2f + 0.5f);
+        return basePosition * GridSize;
     }
 }
