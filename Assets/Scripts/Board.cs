@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
 
     [SerializeField]
     [Range(0.5f, 2f)]
-    float BlockSize = 1f;
+    public float BlockSize = 1f;
 
     public Block[,] Blocks { get; private set; }
 

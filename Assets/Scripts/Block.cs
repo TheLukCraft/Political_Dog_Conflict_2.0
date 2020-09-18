@@ -24,12 +24,20 @@ public class Block : MonoBehaviour
 
     public BlockColor Color { get; private set; }
 
+    public bool IsConnected; 
+
     private Vector3 TargetPosition;
     private Board Board;
+    private BlockConnection BlockConnection;
+
+    private SpriteRenderer SpriteRenderer;
 
     private void Awake()
     {
         Board = FindObjectOfType<Board>();
+        BlockConnection = FindObjectOfType<BlockConnection>();
+
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -41,10 +49,30 @@ public class Block : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdatePosition();
+        UpdateScale();
+        UpdateColor();
+    }
+
+    private void UpdatePosition()
+    {
         transform.localPosition = Vector3.Lerp(
             transform.localPosition,
             TargetPosition,
             Time.deltaTime * 5f);
+    }
+
+    private void UpdateScale()
+    {
+        var targetScale = IsConnected ? 0.8f : 1f;
+        targetScale *= Board.BlockSize;
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale * Vector3.one, Time.deltaTime * 5f);
+    }
+
+    private void UpdateColor()
+    {
+        var targetColor = IsConnected ? new Color(1f, 1f, 1f, 0.5f) : UnityEngine.Color.white;
+        SpriteRenderer.color = UnityEngine.Color.Lerp(SpriteRenderer.color, targetColor, Time.deltaTime * 5);
     }
 
     public void Configure(int x, int y)
@@ -53,6 +81,7 @@ public class Block : MonoBehaviour
         Y = y;
 
         TargetPosition = Board.GetBlockPosition(x, y);
+        IsConnected = false;
     }
     public static BlockColor GetRandomColor()
     {
@@ -66,5 +95,18 @@ public class Block : MonoBehaviour
     {
         var sprite = BlockTypes.First(type => type.Color == Color).sprite;
         GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    private void OnMouseDown()
+    {
+        BlockConnection.StartConnection(this);
+    }
+    private void OnMouseUp()
+    {
+        BlockConnection.Connect(this);
+    }
+    private void OnMouseEnter()
+    {
+        BlockConnection.FinishConnection();
     }
 }
