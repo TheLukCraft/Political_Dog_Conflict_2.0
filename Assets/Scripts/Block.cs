@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public enum BlockColor { Red, Green, Blue, Yellow, Magenta, Gray }
 
@@ -23,7 +24,7 @@ public class Block : MonoBehaviour
     void Start()
     {
         Color = GetRandomColor();
-        SetSprite(Color);
+        SetSprite();
     }
 
     // Update is called once per frame
@@ -40,9 +41,9 @@ public class Block : MonoBehaviour
         return (BlockColor)values.GetValue(index);
     }
 
-    private void SetSprite(BlockColor color)
+    private void SetSprite()
     {
-        var sprite = BlockType.First(type => type.Color == color).Sprite;
+        var sprite = BlockType.First(type => type.Color == Color).Sprite;
         GetComponent<SpriteRenderer>().sprite = sprite;
     }
 }
