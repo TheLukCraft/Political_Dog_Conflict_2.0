@@ -19,8 +19,19 @@ public class Block : MonoBehaviour
     [SerializeField]
     BlockType[] BlockTypes;
 
+    public int X { get; private set; }
+    public int Y { get; private set; }
+
     public BlockColor Color { get; private set; }
-    // Start is called before the first frame update
+
+    private Vector3 TargetPosition;
+    private Board Board;
+
+    private void Awake()
+    {
+        Board = FindObjectOfType<Board>();
+    }
+
     void Start()
     {
         Color = GetRandomColor();
@@ -30,9 +41,19 @@ public class Block : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.localPosition = Vector3.Lerp(
+            transform.localPosition,
+            TargetPosition,
+            Time.deltaTime * 5f);
     }
 
+    public void Configure(int x, int y)
+    {
+        X = x;
+        Y = y;
+
+        TargetPosition = Board.GetBlockPosition(x, y);
+    }
     public static BlockColor GetRandomColor()
     {
         var values = System.Enum.GetValues(typeof(BlockColor));
