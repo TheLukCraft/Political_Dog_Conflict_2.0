@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class BlockConnection : MonoBehaviour
 {
-    bool IsConnecting = false;
     List<Block> ConnectedBlocks = new List<Block>();
     void Start()
     {
-        
+        if(Input.GetMouseButtonUp(0))
+        {
+
+        }
     }
 
     void Update()
@@ -16,13 +18,9 @@ public class BlockConnection : MonoBehaviour
         
     }
 
-    public void StartConnection(Block block)
-    {
-        IsConnecting = true;
-    }
     public void Connect(Block block)
     {
-        if (!IsConnecting)
+        if (!Input.GetMouseButton(0))
             return;
 
         if(ConnectedBlocks.Contains(block))
