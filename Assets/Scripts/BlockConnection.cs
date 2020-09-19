@@ -12,6 +12,8 @@ public class BlockConnection : MonoBehaviour
     private Board Board;
     private LineRenderer LineRenderer;
 
+    public event Action<int> OnConnection;
+
     private void Awake()
     {
         Board = FindObjectOfType<Board>();
@@ -41,6 +43,9 @@ public class BlockConnection : MonoBehaviour
         if (CurrentColor != block.Color)
             return;
 
+        if (ConnectedBlocks.Count() >= 1 && ConnectedBlocks.Last().IsNeighbour(block))
+            return;
+
         block.IsConnected = true;
         ConnectedBlocks.Add(block);
 
@@ -48,9 +53,17 @@ public class BlockConnection : MonoBehaviour
     }
     private void FinishConnection()
     {
-        ConnectedBlocks.
-            ForEach(block => block.IsConnected = false);
+        ConnectedBlocks.ForEach(block => block.IsConnected = false);
 
+        if(ConnectedBlocks.Count >=3)
+        {
+            if (OnConnection != null)
+                OnConnection.Invoke(ConnectedBlocks.Count);
+
+            Board.RemoveBlocks(ConnectedBlocks);
+            Board.RefreshBlocks();
+        }
+        
         ConnectedBlocks.Clear();
 
         CurrentColor = null;

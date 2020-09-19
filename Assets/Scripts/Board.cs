@@ -60,11 +60,39 @@ public class Board : MonoBehaviour
         return block;
     }
 
+
     public Vector2 GetBlockPosition(int x, int y)
     {
         var basePosition = new Vector2(
             x - Width /2f +0.5f,
             y - Height /2f + 0.5f);
         return basePosition * GridSize;
+    }
+
+    public void RemoveBlocks(List<Block> connectedBlocks)
+    {
+        connectedBlocks.ForEach(b => Blocks[b.X, b.Y] = null);
+        connectedBlocks.ForEach(b => Destroy(b.gameObject));
+    }
+
+    public void RefreshBlocks()
+    {
+        for (int x=0; x < Width; x++)
+        {
+            int h = 0;
+            for(int y=0; y<Height; y++)
+            {
+                if (Blocks[x, y] = null)
+                    continue;
+
+                Blocks[x, h] = Blocks[x, y];
+                Blocks[x, h].Configure(x, h);
+
+                h++;
+            }
+
+            for (int y = h; y < Height; y++)
+                Blocks[x, y] = GenerateBlock(x, y);
+        }
     }
 }

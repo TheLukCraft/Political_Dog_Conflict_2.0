@@ -97,6 +97,23 @@ public class Block : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
+    public void ResetColor()
+    {
+        Color = GetRandomColor();
+        SetSprite();
+    }
+
+    public bool IsNeighbour(Block other)
+    {
+        if (Mathf.Abs(X - other.X) > 1f)
+            return false;
+
+        if (Mathf.Abs(Y - other.Y) > 1f)
+            return false;
+
+        return true;
+    }
+
     private void OnMouseEnter()
     {
         ConnectBlock();
