@@ -28,15 +28,17 @@ public class Number : MonoBehaviour
         }
     }
 
-    
+    List<GameObject> DigitsObjects = new List<GameObject>();
+
+
     // Start is called before the first frame update
-    void Start()
-    {
-        Value = 432343;
-    }
+    
 
     private void RefreshNumbers()
     {
+
+        RemoveDigits();
+
         var digits = Value
             .ToString()
             .Select(c => int.Parse(c.ToString()))
@@ -45,8 +47,15 @@ public class Number : MonoBehaviour
         for(int i=0; i<digits.Count(); i++)
         {
             var position = CalculatePosition(i, digits.Count());
-            CreateDigit(position, digits[i]);
+            var digit = CreateDigit(position, digits[i]);
+            DigitsObjects.Add(digit);
         }
+    }
+
+    private void RemoveDigits()
+    {
+        DigitsObjects.ForEach(number => Destroy(number));
+        DigitsObjects.Clear();
     }
 
     private Vector3 CalculatePosition(int index, int numberOfDigits)
@@ -63,7 +72,7 @@ public class Number : MonoBehaviour
         return Vector3.right * result * GridSize;
     }
 
-    private void CreateDigit(Vector3 position, int value)
+    private GameObject CreateDigit(Vector3 position, int value)
     {
         var digit = new GameObject();
         digit.transform.parent = transform;
@@ -71,5 +80,7 @@ public class Number : MonoBehaviour
 
         var sprite = Sprites[value];
         digit.AddComponent<SpriteRenderer>().sprite = sprite;
+
+        return digit;
     }
 }
