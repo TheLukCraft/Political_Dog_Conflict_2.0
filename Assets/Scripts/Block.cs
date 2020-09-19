@@ -97,16 +97,16 @@ public class Block : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
-    private void OnMouseDown()
-    {
-        BlockConnection.StartConnection(this);
-    }
-    private void OnMouseUp()
-    {
-        BlockConnection.Connect(this);
-    }
     private void OnMouseEnter()
     {
-        BlockConnection.FinishConnection();
+        ConnectBlock();
+    }
+    private void OnMouseDown()
+    {
+        ConnectBlock();
+    }
+    private void ConnectBlock()
+    {
+        BlockConnection.Connect(this);
     }
 }

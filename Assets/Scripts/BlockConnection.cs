@@ -1,16 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BlockConnection : MonoBehaviour
 {
     List<Block> ConnectedBlocks = new List<Block>();
+
+    private BlockColor? CurrentColor; 
+    private Board Board;
+    private LineRenderer LineRenderer;
+
+    private void Awake()
+    {
+        Board = FindObjectOfType<Board>();
+    }
     void Start()
     {
-        if(Input.GetMouseButtonUp(0))
-        {
-
-        }
+        if (Input.GetMouseButtonUp(0))
+            FinishConnection();
     }
 
     void Update()
@@ -26,15 +35,35 @@ public class BlockConnection : MonoBehaviour
         if(ConnectedBlocks.Contains(block))
             return;
 
+        if (!CurrentColor.HasValue)
+            CurrentColor = block.Color;
+
+        if (CurrentColor != block.Color)
+            return;
+
         block.IsConnected = true;
         ConnectedBlocks.Add(block);
+
+        RefreshConnector();
     }
-    public void FinishConnection()
+    private void FinishConnection()
     {
         ConnectedBlocks.
             ForEach(block => block.IsConnected = false);
 
         ConnectedBlocks.Clear();
-        IsConnecting = false;
+
+        CurrentColor = null;
+        RefreshConnector();
+    }
+    private void RefreshConnector()
+    {
+        var points = ConnectedBlocks
+            .Select(block => Board.GetBlockPosition(block.X, block.Y))
+            .Select(position => (Vector3)position + Vector3.back * 2f)
+            .ToArray();
+
+        LineRenderer.positionCount = points.Length;
+        LineRenderer.SetPositions(points);
     }
 }
